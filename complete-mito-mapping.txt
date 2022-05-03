@@ -1,0 +1,61 @@
+## This workflow was described in Csabai and Solymosi (2022) Research Square doi:10.21203/rs.3.rs-1330800/v1
+## It maps NGS reads to all complete mitochondrial genomes in NCBI. 
+## Mito genomes that have high coverage may be contaminating sequences
+
+
+Install latest version of samtools. Change the path as follows:
+
+export PATH=/home/ec2-user/samtools-1.15.1/bin:$PATH
+
+
+Download all mitochondrial genomes from:
+
+https://ftp.ncbi.nlm.nih.gov/refseq/release/mitochondrion/
+
+
+Make an index:
+
+bowtie2-build mitochondrion.1.1.genomic.fna.gz mitochondrion.1.1.genomic.fna.index
+
+
+Map the sample reads to the reference mitochondrial genomes:
+
+bowtie2 -x mitochondrion.1.1.genomic.fna.index -U SRR17147625.fastq -S file.sam
+
+
+Sort the outputted sam file:
+
+samtools sort file.sam -o file.sorted.sam
+
+
+Calculate the coverage as follows:
+
+samtools coverage file.sorted.sam -o coverage.out
+
+
+Extract the coverage column:
+
+awk -F '\t' '{print($1"\t"$6)}' coverage.out > out
+
+
+Then, sort the second output column, with the highest coverage at the top:
+
+sort -k2 -r -n out > sorted
+
+
+Alternatively, do both steps together:
+
+awk -F '\t' '{print($1"\t"$6)}' coverage.out | sort -k2 -r  -n > sorted2
+
+
+## To do: add species names to accessions in out file
+
+
+##################################################################################################################
+
+# the pipeline can be modified to test for coronavirus reads in an NGS dataset
+# 230 coronavirus genomes were downloaded from CoVDB(v3)
+# These included SARS2, SARS, OC43, NL63, HKU1, 229E, MERS, bat and pangolin coronavirus genomes (see file allcoronavirus.fa)
+# the allcoronavirus.fa file should be indexed, and then the above workflow can be followed
+
+
