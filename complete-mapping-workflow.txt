@@ -3,52 +3,66 @@
 ## Mito genomes that have high coverage may be contaminating sequences
 
 
-Install latest version of samtools. Change the path as follows:
+# Install latest version of samtools. Change the path as follows:
 
 export PATH=/home/ec2-user/samtools-1.15.1/bin:$PATH
 
 
-Download all mitochondrial genomes from:
+# Download all mitochondrial genomes from:
 
 https://ftp.ncbi.nlm.nih.gov/refseq/release/mitochondrion/
 
 
-Make an index:
+# Make an index:
 
 bowtie2-build mitochondrion.1.1.genomic.fna.gz mitochondrion.1.1.genomic.fna.index
 
 
-Map the sample reads to the reference mitochondrial genomes:
+# Map the sample reads to the reference mitochondrial genomes:
 
 bowtie2 -x mitochondrion.1.1.genomic.fna.index -U SRR17147625.fastq -S file.sam
 
 
-Sort the outputted sam file:
+# Sort the outputted sam file:
 
 samtools sort file.sam -o file.sorted.sam
 
 
-Calculate the coverage as follows:
+# Calculate the coverage as follows:
 
 samtools coverage file.sorted.sam -o coverage.out
 
 
-Extract the coverage column:
+# Extract the coverage column:
 
 awk -F '\t' '{print($1"\t"$6)}' coverage.out > out
 
 
-Then, sort the second output column, with the highest coverage at the top:
+# Then, sort the second output column, with the highest coverage at the top:
 
 sort -k2 -r -n out > sorted
 
 
-Alternatively, do both steps together:
+# Alternatively, do both steps together:
 
 awk -F '\t' '{print($1"\t"$6)}' coverage.out | sort -k2 -r  -n > sorted2
 
 
-## To do: add species names to accessions in out file
+##### In order to add species names to the output file the following series of steps can be taken:
+
+# 1. Make a sorted taxa list:
+
+grep '>' mitochondrion.1.1.genomic.fna | sed 's/>//g' | awk -F ' ' '{print $1"\t"$2" "$3}' > taxa
+
+sort -k1 taxa > sortedtaxa
+
+# 2. Match the output of the mapping with the sorted taxa list:
+
+sed -i "1d" coverage.out | awk -F '\t' '{print($1"\t"$6)}' coverage.out | sort > nusorted
+
+join -t $'\t'   nusorted ../../sortedtaxa | tee joined
+
+sort -t $'\t' -k2 -rn joined > final-list
 
 
 ##################################################################################################################
