@@ -65,6 +65,18 @@ join -t $'\t'   nusorted ../../sortedtaxa | tee joined
 sort -t $'\t' -k2 -rn joined > final-list
 
 
+# 3. An alternative python method for matching species names using the taxa list (courtesy Dieunel Derilus):
+
+>>>taxa=pd.read_csv("taxa.csv")
+>>>s6=pd.read_table("NBP01_S6.out.sorted")
+>>>s5=pd.read_table("NBP02_S5.out.sorted")
+>>>s5.columns= ['mito_id', 'coverage']
+>>>s6.columns= ['mito_id', 'coverage']
+>>>map1=s5.merge(s6=on='mito_id')
+>>> map2=map1.merge(taxa, on="mito_id")
+>>> map2.to_csv("mappin_to_mitochondria.csv")
+
+
 ##################################################################################################################
 
 # the pipeline can be modified to test for coronavirus reads in an NGS dataset
