@@ -1,6 +1,6 @@
-## This workflow was described in Csabai and Solymosi (2022) Research Square doi:10.21203/rs.3.rs-1330800/v1
-## It maps NGS reads to all complete mitochondrial genomes in NCBI. 
-## Mito genomes that have high coverage may be contaminating sequences
+## The general outline of the workflow was described in Csabai and Solymosi (2022) Research Square doi:10.21203/rs.3.rs-1330800/v1
+## Mitoscan maps NGS reads to all complete mitochondrial genomes in NCBI, and also be adapted to coronavirus read contamination
+## Mito genomes that have high coverage may represent contaminating sequences
 
 
 # Install latest version of samtools. Change the path as follows:
