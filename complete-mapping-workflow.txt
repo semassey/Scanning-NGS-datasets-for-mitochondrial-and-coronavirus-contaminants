@@ -23,9 +23,14 @@ cat mitochondrion.1.1.genomic.fna.gz mitochondrion.2.1.genomic.fna.gz > mitochon
 bowtie2-build mitochondrion.cat.genomic.fna.gz mitochondrion.cat.genomic.fna.index
 
 
+# Remove sample reads < 20 bp, using BBmap reformat.sh, as these cause non-specific mapping (h/t Adrian J @bumblesci)
+
+reformat.sh minlength=20 in=*.fastq out=*.filt.fastq
+
+
 # Map the sample reads to the reference mitochondrial genomes:
 
-bowtie2 -x mitochondrion.cat.genomic.fna.index -U *.fastq -S file.sam
+bowtie2 -x mitochondrion.cat.genomic.fna.index -U *.filt.fastq -S file.sam
 
 
 # Sort the outputted sam file:
