@@ -1,6 +1,10 @@
 #!/usr/bin/bash
 
-bowtie2 -x yourpath/mitochondrion.cat.genomic.fna.index -U yourpath/*.fastq.gz -S file.sam
+reformat.sh minlength=20 in=*.fastq.gz out=*.filt.fastq
+
+bowtie2 -x yourpath/mitochondrion.cat.genomic.fna.index -U yourpath/*.filt.fastq.gz -S file.sam
+
+rm *.filt.fastq
 
 samtools sort file.sam -o file.sorted.sam
 
