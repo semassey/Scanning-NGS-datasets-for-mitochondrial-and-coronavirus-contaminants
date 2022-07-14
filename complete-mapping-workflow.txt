@@ -24,6 +24,7 @@ bowtie2-build mitochondrion.cat.genomic.fna.gz mitochondrion.cat.genomic.fna.ind
 
 
 # Remove sample reads < 20 bp, using BBmap reformat.sh, as these cause non-specific mapping (h/t Adrian J @bumblesci)
+# This step is necessary for Ion Torrent data, which has a lot of short reads, but unnecessary for Illumina datasets
 
 reformat.sh minlength=20 in=*.fastq out=*.filt.fastq
 
