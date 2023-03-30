@@ -93,6 +93,11 @@ sort -t $'\t' -k2 -rn joined > final-list
 # the pipeline can be modified to test for coronavirus reads in an NGS dataset
 # 230 coronavirus genomes were downloaded from CoVDB(v3)
 # These included SARS2, SARS, OC43, NL63, HKU1, 229E, MERS, bat and pangolin coronavirus genomes (see file allcoronavirus.fa)
-# the allcoronavirus.fa file should be indexed, and then the above workflow can be followed
+# the allcoronavirus.fa file should be indexed as follows:
+
+bowtie2-build allcoronavirus.fa allcoronavirus.fa.index
+
+
+# then the above workflow can be followed
 
 
