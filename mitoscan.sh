@@ -14,11 +14,15 @@ samtools coverage file.sorted.sam -o coverage.out
 
 rm file.sorted.sam
 
-sed -i "1d" coverage.out | awk -F '\t' '{print($1"\t"$6)}' coverage.out | sort > nusorted
+sed -i "1d" coverage.out 
+
+awk -F '\t' '{print($1"\t"$4"\t"$6)}' coverage.out | sort > nusorted
 
 join -t $'\t' nusorted yourpath/sortedtaxa | tee joined
 
-sort -t $'\t' -k2 -rn joined > final-list
+sort -t $'\t' -k3 -rn joined > mito-reads-cov
+
+sed -i "1 i Accession\t#Reads\t%Coverage\tSpecies" mito-reads-cov
 
 rm joined
 rm coverage.out
