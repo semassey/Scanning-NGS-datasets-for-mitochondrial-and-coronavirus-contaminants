@@ -100,4 +100,8 @@ bowtie2-build allcoronavirus.fa allcoronavirus.fa.index
 
 # then the above workflow can be followed
 
+# polyA tails can be removed from the coronavirus genomes as follows
+
+cutadapt -a "A{100}"  allcoronavirus.fa  >  allcoronavirus-no-polyA.fa
+
 
