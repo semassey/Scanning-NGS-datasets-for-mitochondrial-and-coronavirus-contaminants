@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-bowtie2 -x Yourpath/allcoronavirus.fa.index -U Yourpath/*.fq -S file.sam
+bowtie2 -x Yourpath/allcoronavirus.fa.index -U Yourpath/*.fq -S file.sam -a --non-deterministic
 
 samtools sort file.sam -o file.sorted.sam
 
