@@ -1,6 +1,11 @@
 #!/usr/bin/bash
 
+# removing reads < 20 bp in length will improve mapping accuracy
+
 reformat.sh minlength=20 in=*.fastq.gz out=*.filt.fastq
+
+# an additional potential step is to add a masking procedure to remove low-complexity regions, this may remove false mapping positives
+# bbmask.sh can be used for this h/t Henjin
 
 bowtie2 -x yourpath/mitochondrion.cat.genomic.fna.index -U yourpath/*.filt.fastq.gz -S file.sam
 
