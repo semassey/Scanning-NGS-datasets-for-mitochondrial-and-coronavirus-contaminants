@@ -1,5 +1,8 @@
 #!/usr/bin/bash
 
+# an additional potential step is to add a masking procedure to remove low-complexity regions, this may remove false mapping positives
+# bbmask.sh can be used for this h/t Henjin
+
 # the -a and --non-deterministic bowtie2 options improve multi-mapping of reads to multiple genomes in the dataset
 
 bowtie2 -x Yourpath/allcoronavirus.fa.index -U Yourpath/*.fq -S file.sam -a --non-deterministic
