@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 
+# the -a and --non-deterministic bowtie2 options improve multi-mapping of reads to multiple genomes in the dataset
+
 bowtie2 -x Yourpath/allcoronavirus.fa.index -U Yourpath/*.fq -S file.sam -a --non-deterministic
 
 samtools sort file.sam -o file.sorted.sam
