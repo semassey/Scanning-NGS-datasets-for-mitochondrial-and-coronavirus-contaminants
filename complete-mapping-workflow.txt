@@ -44,19 +44,19 @@ samtools sort file.sam -o file.sorted.sam
 samtools coverage file.sorted.sam -o coverage.out
 
 
-# Extract the coverage column:
+# Extract the # mapped reads and coverage columns:
 
-awk -F '\t' '{print($1"\t"$6)}' coverage.out > out
+awk -F '\t' '{print($1"\t"$4"\t"$6)}' coverage.out > out
 
 
-# Then, sort the second output column, with the highest coverage at the top:
+# Then, sort the third output column, with the highest coverage at the top:
 
-sort -k2 -r -n out > sorted
+sort -k3 -r -n out > sorted
 
 
 # Alternatively, do both steps together:
 
-awk -F '\t' '{print($1"\t"$6)}' coverage.out | sort -k2 -r  -n > sorted2
+awk -F '\t' '{print($1"\t"$4"\t"$6)}' coverage.out | sort -k3 -r  -n > sorted2
 
 
 ##### In order to add species names to the output file the following series of steps can be taken:
@@ -69,11 +69,13 @@ sort -k1 taxa > sortedtaxa
 
 # 2. Match the output of the mapping with the sorted taxa list:
 
-sed -i "1d" coverage.out | awk -F '\t' '{print($1"\t"$6)}' coverage.out | sort > nusorted
+sed -i "1d" coverage.out
+
+awk -F '\t' '{print($1"\t"$4"\t"$6)}' coverage.out | sort > nusorted
 
 join -t $'\t'   nusorted ../../sortedtaxa | tee joined
 
-sort -t $'\t' -k2 -rn joined > final-list
+sort -t $'\t' -k3 -rn joined > final-list
 
 
 # 3. An alternative python method for matching species names using the taxa list (courtesy Dieunel Derilus):
@@ -100,8 +102,14 @@ bowtie2-build allcoronavirus.fa allcoronavirus.fa.index
 
 # then the above workflow can be followed
 
-# polyA tails can be removed from the coronavirus genomes as follows
+# polyA tails can be removed from the coronavirus genomes as follows (this prevents artefactual mapping to the polyA tail)
 
 cutadapt -a "A{100}"  allcoronavirus.fa  >  allcoronavirus-no-polyA.fa
+
+# new coronavirus genomes were added to the file (and polyA tails removed):
+
+allcoronavirus-281-no-polyA.fa
+
+
 
 
