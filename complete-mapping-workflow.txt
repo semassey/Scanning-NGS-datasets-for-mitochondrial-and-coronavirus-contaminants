@@ -34,6 +34,13 @@ reformat.sh minlength=20 in=*.fastq out=*.filt.fastq
 bowtie2 -x mitochondrion.cat.genomic.fna.index -U *.filt.fastq -S file.sam
 
 
+# (for a 100 % match use bbmap, this does not require an index and is faster)
+# (this is more useful for coronavirus genomes, when looking for CoV contamination)
+# (note, cross-mapping is quirkly in bbmap - often reads 100 % mapping one genome, will not map to another even if also a 100% match)
+
+bbmap.sh minid=1 in=*.filt.fastq  ref=../allcoronavirus-282.fa  out=file.sam
+
+
 # Sort the outputted sam file:
 
 samtools sort file.sam -o file.sorted.sam
