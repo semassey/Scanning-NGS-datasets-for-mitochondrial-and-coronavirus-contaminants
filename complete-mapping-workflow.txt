@@ -117,6 +117,18 @@ cutadapt -a "A{100}"  allcoronavirus.fa  >  allcoronavirus-no-polyA.fa
 
 allcoronavirus-281-no-polyA.fa
 
+#####################################################################################################
+
+# the pipeline can also be modified to scan for the presence of RNA/DNA viruses in NGS datasets
+# these can be associated with eukaryotic hosts, or may  be associated with prokaryotes
+
+# the following file contains all NCBI virus genome sequences and was downloaed from 
+# https://ftp.ncbi.nlm.nih.gov/refseq/release/viral/
+
+viral.1.1.genomic.fna.gz
+
+# then the file can be indexed using bowtie-build, and inserted into the coronascan pipeline
+
 
 
 
