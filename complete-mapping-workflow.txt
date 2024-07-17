@@ -36,7 +36,7 @@ bowtie2 -x mitochondrion.cat.genomic.fna.index -U *.filt.fastq -S file.sam
 
 # (for a 100 % match use bbmap, this does not require an index and is faster)
 # (this is more useful for coronavirus genomes, when looking for CoV contamination)
-# (note, cross-mapping is quirkly in bbmap - often reads 100 % mapping one genome, will not map to another even if also a 100% match)
+# (note, cross-mapping is quirky in bbmap - often reads 100 % mapping to one genome, will not map to another even if also a 100% match)
 
 bbmap.sh minid=1 in=*.filt.fastq  ref=../allcoronavirus-282.fa  out=file.sam
 
@@ -128,6 +128,7 @@ allcoronavirus-281-no-polyA.fa
 viral.1.1.genomic.fna.gz
 
 # then the file can be indexed using bowtie-build, and inserted into the coronascan pipeline
+# see the script RNAvirusscan.sh
 
 
 
